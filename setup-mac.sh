@@ -259,6 +259,11 @@ else
     plutil -replace AutoStart -bool YES "$DOCKER_SETTINGS" 2>/dev/null \
       && success "Docker Desktop setting: start at login" \
       || warn "Could not set Docker's AutoStart; the login agent below covers it"
+    # Don't pop the Docker dashboard every time Docker (re)starts — the
+    # watchdog may restart it in the background and nobody needs the window.
+    plutil -replace OpenUIOnStartupDisabled -bool YES "$DOCKER_SETTINGS" 2>/dev/null \
+      && success "Docker Desktop setting: don't open the dashboard on start" \
+      || warn "Could not turn off Docker's dashboard-on-start (harmless)"
   fi
 
   # write_agent <label> <body-xml>
